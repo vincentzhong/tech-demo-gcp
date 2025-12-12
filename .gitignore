@@ -52,3 +52,16 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.*
+
+# Docker/IDE/misc
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+docker-compose*

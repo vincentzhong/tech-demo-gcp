@@ -1,0 +1,9 @@
+project_id    = "your-gcp-project-id"
+region        = "us-central1"
+repository_id = "demo-api"
+service_name  = "books-api"
+image         = "us-central1-docker.pkg.dev/your-gcp-project-id/demo-api/books-api:latest"
+api_key       = "replace-with-api-key"
+min_instances = 0
+max_instances = 3
+
