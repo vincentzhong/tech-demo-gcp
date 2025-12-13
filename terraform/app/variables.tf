@@ -24,6 +24,7 @@ variable "service_name" {
 variable "image" {
   description = "Container image for the API"
   type        = string
+  default     = "gcr.io/cloudrun/hello"  # Placeholder image for initial deployment
 }
 
 variable "api_key" {

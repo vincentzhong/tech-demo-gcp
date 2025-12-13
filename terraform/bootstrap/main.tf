@@ -20,7 +20,6 @@ locals {
     "iam.googleapis.com",
     "artifactregistry.googleapis.com",
     "run.googleapis.com",
-    "apigateway.googleapis.com",
     "serviceusage.googleapis.com"
   ]
 }
@@ -53,7 +52,6 @@ resource "google_project_iam_member" "terraform_roles" {
     "roles/storage.admin",
     "roles/artifactregistry.admin",
     "roles/run.admin",
-    "roles/apigateway.admin",
     "roles/iam.serviceAccountAdmin",
     "roles/iam.serviceAccountUser",
     "roles/serviceusage.serviceUsageAdmin"

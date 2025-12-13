@@ -1,4 +1,4 @@
-using Api.Filters;
+using Api.Middleware;
 using Api.Repositories;
 using Api.Services;
 using Api.Settings;
@@ -10,7 +10,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<ApiKeySettings>(builder.Configuration.GetSection(ApiKeySettings.SectionName));
-builder.Services.AddScoped<ApiKeyAuthFilter>();
 
 builder.Services.AddSingleton<IBookRepository, InMemoryBookRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
@@ -24,6 +23,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// API key authentication middleware (applies globally except /health)
+app.UseMiddleware<ApiKeyAuthMiddleware>();
 
 app.MapControllers();
 

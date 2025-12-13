@@ -1,13 +1,8 @@
-﻿using Api.Filters;
+﻿using Api.Middleware;
 using Api.Repositories;
 using Api.Services;
 using Api.Settings;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Abstractions;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 
@@ -27,29 +22,36 @@ public class ApiTests
     }
 
     [Fact]
-    public async Task ApiKeyFilter_blocks_missing_key()
+    public async Task ApiKeyMiddleware_blocks_missing_key()
     {
         var httpContext = new DefaultHttpContext();
-        var actionContext = new ActionContext(
-            httpContext,
-            new RouteData(),
-            new ControllerActionDescriptor { ActionName = "Get", ControllerName = "Books" });
+        httpContext.Request.Path = "/api/books";
 
-        var filter = new ApiKeyAuthFilter(
+        var middleware = new ApiKeyAuthMiddleware(
+            (context) => Task.CompletedTask,
             Options.Create(new ApiKeySettings { Key = "expected-key" }),
-            NullLogger<ApiKeyAuthFilter>.Instance);
+            NullLogger<ApiKeyAuthMiddleware>.Instance);
 
-        var actionExecutingContext = new ActionExecutingContext(
-            actionContext,
-            new List<IFilterMetadata>(),
-            new Dictionary<string, object?>(),
-            controller: new object());
+        await middleware.InvokeAsync(httpContext);
 
-        var executed = new ActionExecutedContext(actionContext, new List<IFilterMetadata>(), controller: new object());
-        ActionExecutionDelegate next = () => Task.FromResult(executed);
+        Assert.Equal(401, httpContext.Response.StatusCode);
+    }
 
-        await filter.OnActionExecutionAsync(actionExecutingContext, next);
+    [Fact]
+    public async Task ApiKeyMiddleware_allows_health_endpoint()
+    {
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/health";
+        var wasCalled = false;
 
-        Assert.IsType<UnauthorizedResult>(actionExecutingContext.Result);
+        var middleware = new ApiKeyAuthMiddleware(
+            (context) => { wasCalled = true; return Task.CompletedTask; },
+            Options.Create(new ApiKeySettings { Key = "expected-key" }),
+            NullLogger<ApiKeyAuthMiddleware>.Instance);
+
+        await middleware.InvokeAsync(httpContext);
+
+        Assert.Equal(200, httpContext.Response.StatusCode);
+        Assert.True(wasCalled);
     }
 }

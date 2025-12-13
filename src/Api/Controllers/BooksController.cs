@@ -1,4 +1,3 @@
-using Api.Filters;
 using Api.Models;
 using Api.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +6,6 @@ namespace Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[ServiceFilter(typeof(ApiKeyAuthFilter))]
 public class BooksController : ControllerBase
 {
     private readonly IBookService _bookService;
@@ -24,4 +22,3 @@ public class BooksController : ControllerBase
         return Ok(books);
     }
 }
-

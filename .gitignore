@@ -58,6 +58,12 @@ nunit-*.xml
 .terraform.lock.hcl
 terraform.tfstate
 terraform.tfstate.*
+*.tfvars
+*.tfvars.json
+
+# GCP Service Account Keys
+sa-key.json
+*-key.json
 
 # Docker/IDE/misc
 .vscode/
