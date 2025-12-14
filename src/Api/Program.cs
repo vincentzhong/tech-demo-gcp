@@ -29,5 +29,6 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<ApiKeyAuthMiddleware>();
 
 app.MapControllers();
+app.MapGet("/", () => Results.Ok("OK"));
 
 app.Run();
