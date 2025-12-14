@@ -181,7 +181,12 @@ terraform apply `
 ### 2) App stack (provision infrastructure with placeholder image)
 Deploy the infrastructure (Artifact Registry, Cloud Run service, IAM) with a placeholder image. The real application will be deployed via CI/CD.
 
-> **💡 Best Practice:** This approach separates infrastructure provisioning (Terraform) from application deployment (CI/CD). The initial deployment uses a public placeholder image (`gcr.io/cloudrun/hello`), and CI/CD will deploy your actual application.
+> **💡 Best Practice - Separation of Concerns:**
+> - **Terraform** manages infrastructure (Cloud Run service, IAM, networking, scaling)
+> - **CI/CD** manages application deployments (Docker images)
+> - Terraform uses `lifecycle.ignore_changes` to prevent reverting CI/CD deployments
+> - CI/CD deploys directly via `gcloud run deploy` (fast, no Terraform overhead)
+> - This is the industry-standard approach for production systems
 
 **Replace placeholders:**
 - `<YOUR_BUCKET>` → The bucket name from step 1 output

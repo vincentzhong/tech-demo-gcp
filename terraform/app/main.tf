@@ -39,7 +39,8 @@ resource "google_cloud_run_v2_service" "api" {
 
   ingress = "INGRESS_TRAFFIC_ALL"
 
-  # Ignore changes to the image tag - let CI/CD manage deployments
+  # Let CI/CD manage image deployments directly via gcloud
+  # Terraform only manages infrastructure configuration
   lifecycle {
     ignore_changes = [
       template[0].containers[0].image,
