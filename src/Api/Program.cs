@@ -22,7 +22,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Don't use HTTPS redirection in Cloud Run - it handles TLS termination
+// app.UseHttpsRedirection();
 
 // API key authentication middleware (applies globally except /health)
 app.UseMiddleware<ApiKeyAuthMiddleware>();
