@@ -71,3 +71,4 @@ sa-key.json
 *.DS_Store
 Thumbs.db
 docker-compose*
+LESSONS_LEARNED.md
