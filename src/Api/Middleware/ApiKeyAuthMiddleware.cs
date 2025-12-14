@@ -21,8 +21,9 @@ public class ApiKeyAuthMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        // Skip auth for health endpoint
-        if (context.Request.Path.StartsWithSegments("/health"))
+        // Allow health/probe endpoints (Cloud Run hits "/" or "/_ah/*" during startup)
+        var path = context.Request.Path;
+        if (path == "/" || path.StartsWithSegments("/health") || path.StartsWithSegments("/_ah"))
         {
             await _next(context);
             return;
