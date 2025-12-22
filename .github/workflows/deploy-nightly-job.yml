@@ -43,7 +43,7 @@ jobs:
         # This step updates the job with the new image.
         # It assumes the job has already been created via Terraform.
         run: |
-          gcloud run jobs update ${{ env.JOB_NAME }} \
-            --image ${{ env.IMAGE }} \
-            --region ${{ env.GCP_REGION }} \
+          gcloud run jobs update "$JOB_NAME" \
+            --image "$IMAGE" \
+            --region "$GCP_REGION" \
             --quiet

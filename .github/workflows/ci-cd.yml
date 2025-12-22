@@ -3,7 +3,19 @@ name: ci-cd
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'src/Api/**'
+      - 'tests/Api.UnitTests/**'
+      - 'Dockerfile'
+      - 'terraform/app/**'
+      - '.github/workflows/ci-cd.yml'
   pull_request:
+    paths:
+      - 'src/Api/**'
+      - 'tests/Api.UnitTests/**'
+      - 'Dockerfile'
+      - 'terraform/app/**'
+      - '.github/workflows/ci-cd.yml'
 
 env:
   DOTNET_VERSION: "9.0.x"
